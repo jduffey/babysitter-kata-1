@@ -6,16 +6,18 @@ import java.time.LocalTime;
 
 public class Babysitter {
 
-	public long compute(LocalDateTime start, LocalDateTime end) {
-		
+	public int compute(String family, LocalDateTime start, LocalDateTime end) {
 		LocalTime endTime = end.toLocalTime();
 		LocalTime startTime = start.toLocalTime();
-		
-		long elapsedHours = Duration.between(startTime, endTime).toHours(); 
-		if ((start.getDayOfMonth() - end.getDayOfMonth()) == -1) {
+		int pay = 0;
+		if (family.equalsIgnoreCase("A")) {
+			long elapsedHours = Duration.between(startTime, endTime).toHours();
+			if ((start.getDayOfMonth() - end.getDayOfMonth()) == -1) {
 			elapsedHours += 24;
 		}
-		return elapsedHours;
+			pay = (int) (elapsedHours * 15);
+		}
+		return pay;
 	}
 
 }
