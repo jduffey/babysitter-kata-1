@@ -50,7 +50,7 @@ public class BabysitterTest {
 	@Test
 	public void shouldCalculateWagesForFamilyAGivenStartBefore23AndEndTimeAfter23ButBeforeMidnight() {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 12, 17, 0);
-		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 23, 01);
+		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 23, 1);
 		int pay = sophie.compute("A", start, end);
 		assertEquals(90, pay);		
 	}
@@ -77,6 +77,14 @@ public class BabysitterTest {
 		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 19, 0);
 		int pay = sophie.compute("C", start, end);
 		assertEquals(42, pay);
+	}
+	
+	@Test
+	public void shouldCalculateWagesForFamilyCGivenStartAndEndAfter2100() {
+		LocalDateTime start = LocalDateTime.of(2018, 12, 12, 21, 1 );
+		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 23, 1);
+		int pay = sophie.compute("C", start, end);
+		assertEquals(30, pay);
 	}
 	
 }

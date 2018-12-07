@@ -40,11 +40,19 @@ public class Babysitter {
 			}
 
 		} else if (family.equalsIgnoreCase("C")) {
+			LocalTime rateChange = LocalTime.parse("21:00");
+			long firstElapsedMinutes = 0;
+			long secondElapsedMinutes = 0;
 			
-			long elapsedMinutes = Duration.between(start, end).toMinutes();
-			pay = (int) (elapsedMinutes / 60 * 21);
+			if( endTime.isBefore(rateChange) && endTime.isAfter(earliestStart)){
+				firstElapsedMinutes = Duration.between(start, end).toMinutes();
+			}
+			else if (startTime.isAfter(rateChange) || startTime.isBefore(latestEnd) ) {
+				secondElapsedMinutes = Duration.between(start, end).toMinutes();
+			}
 			
-			
+			pay = (int) ((firstElapsedMinutes / 60 * 21) + (secondElapsedMinutes/60 * 15));
+	
 		}
 		return pay;
 	}
