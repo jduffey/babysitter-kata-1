@@ -39,6 +39,12 @@ public class Babysitter {
 
 			}
 
+		} else if (family.equalsIgnoreCase("C")) {
+			
+			long elapsedMinutes = Duration.between(start, end).toMinutes();
+			pay = (int) (elapsedMinutes / 60 * 21);
+			
+			
 		}
 		return pay;
 	}
