@@ -108,6 +108,15 @@ public class BabysitterTest {
 		int pay = sophie.compute("C", start, end);
 		assertEquals(30, pay);
 	}
+	
+	@Test
+	public void shouldCalculateWagesForFamilyBGivenStartAndEndBefore2200() {
+		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 17, 0 );
+		LocalDateTime end = LocalDateTime.of(2018, 12, 13, 20, 0);
+		int pay = sophie.compute("B", start, end);
+		assertEquals(36, pay);
+	}
+	
 
 	
 }
