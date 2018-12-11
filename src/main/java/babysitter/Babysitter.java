@@ -58,13 +58,16 @@ public class Babysitter {
 			LocalTime rateChange2 = LocalTime.MIDNIGHT;
 			long firstElapsedMinutes = 0;
 			long thirdElapsedMinutes = 0;
+			long secondElapsedMinutes = 0;
 			
 			if ((endTime.isBefore(rateChange1) || endTime.equals(rateChange1)) && endTime.isAfter(earliestStart)) {
 				firstElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
 			} else if (startTime.isBefore(latestEnd)) {
 				thirdElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
+			} else if ((startTime.isAfter(rateChange1) || startTime.equals(rateChange1)) && (endTime.isBefore(LocalTime.MAX) || endTime.equals(rateChange2))) {
+				secondElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
 			}
-			pay = (int) (firstElapsedMinutes / 60 * 12 + thirdElapsedMinutes / 60 * 16);
+			pay = (int) (firstElapsedMinutes / 60 * 12 + thirdElapsedMinutes / 60 * 16 + secondElapsedMinutes/ 60 * 8);
 		}
 		
 		
