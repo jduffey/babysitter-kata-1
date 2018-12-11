@@ -2,7 +2,7 @@ package babysitter;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+
 
 import java.time.LocalDateTime;
 
@@ -198,7 +198,13 @@ public class BabysitterTest {
 		assertEquals(0, pay);
 	}
 
-	
+	@Test
+	public void shouldFailForEndMoreThan11HoursFromStart() throws InvalidTimesException {
+		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 17, 0 );
+		LocalDateTime end = LocalDateTime.of(2018, 12, 14, 20, 30);
+		int pay = sophie.compute("B", start, end);
+		assertEquals(0, pay);
+	}
 	
 	
 	
