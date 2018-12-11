@@ -141,6 +141,13 @@ public class BabysitterTest {
 		assertEquals(16, pay);
 	}
 	
+	@Test
+	public void shouldCalculateWagesForFamilyBGivenStartBefore2200AndEndBeforeMidnight() {
+		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 18, 0 );
+		LocalDateTime end = LocalDateTime.of(2018, 12, 13, 23, 0);
+		int pay = sophie.compute("B", start, end);
+		assertEquals(56, pay);
+	}
 
 	
 	
