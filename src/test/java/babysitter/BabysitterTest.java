@@ -182,6 +182,15 @@ public class BabysitterTest {
 		assertEquals(0, pay);
 	}
 	
+	@Test
+	public void shouldFailForStartBeforeEarliest() throws InvalidTimesException {
+		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 15, 0 );
+		LocalDateTime end = LocalDateTime.of(2018, 12, 13, 23, 0);
+		int pay = sophie.compute("B", start, end);
+		assertEquals(0, pay);
+	}
+	
+
 
 	
 	
