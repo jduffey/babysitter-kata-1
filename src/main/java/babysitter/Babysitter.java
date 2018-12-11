@@ -30,7 +30,7 @@ public class Babysitter {
 					secondElapsedMinutes = Duration.between(rateChange, LocalTime.MAX).toMinutes() + 1;
 					secondElapsedMinutes += Duration.between(LocalTime.MIDNIGHT, endTime).toMinutes() + 1;
 				} else if (endTime.isBefore(LocalTime.MAX)) {
-					secondElapsedMinutes = Duration.between(rateChange, endTime).toMinutes() + 1; 
+					secondElapsedMinutes = Duration.between(rateChange, endTime).toMinutes() + 1;
 				}
 			}
 			pay = (int) ((firstElapsedMinutes / 60 * 15) + (secondElapsedMinutes / 60 * 20));
@@ -53,31 +53,31 @@ public class Babysitter {
 				}
 			}
 			pay = (int) ((firstElapsedMinutes / 60 * 21) + (secondElapsedMinutes / 60 * 15));
-		} else if(family.equalsIgnoreCase("B")) {
+		} else if (family.equalsIgnoreCase("B")) {
 			LocalTime rateChange1 = LocalTime.parse("22:00");
 			LocalTime rateChange2 = LocalTime.MIDNIGHT;
 			long firstElapsedMinutes = 0;
 			long thirdElapsedMinutes = 0;
 			long secondElapsedMinutes = 0;
-			
+
 			if ((endTime.isBefore(rateChange1) || endTime.equals(rateChange1)) && endTime.isAfter(earliestStart)) {
 				firstElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
 			} else if (startTime.isBefore(latestEnd)) {
 				thirdElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
-			} else if ((startTime.isAfter(rateChange1) || startTime.equals(rateChange1)) && (endTime.isBefore(LocalTime.MAX) || endTime.equals(rateChange2))) {
+			} else if ((startTime.isAfter(rateChange1) || startTime.equals(rateChange1))
+					&& (endTime.isBefore(LocalTime.MAX) || endTime.equals(rateChange2))) {
 				secondElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
-			} else if (startTime.isBefore(rateChange1) && endTime.isAfter(rateChange1)) {
+			} else if (startTime.isBefore(rateChange1) && (endTime.isAfter(rateChange1))) {
 				firstElapsedMinutes = Duration.between(startTime, rateChange1).toMinutes() + 1;
-				secondElapsedMinutes = Duration.between(rateChange1, endTime).toMinutes() +1;
+				secondElapsedMinutes = Duration.between(rateChange1, endTime).toMinutes() + 1;
+			} else if (startTime.isBefore(rateChange1) && endTime.equals(rateChange2)) {
+				firstElapsedMinutes = Duration.between(startTime, rateChange1).toMinutes() + 1;
+				secondElapsedMinutes = Duration.between(rateChange1, LocalTime.MAX).toMinutes() + 1;
 			}
-			pay = (int) (firstElapsedMinutes / 60 * 12 + thirdElapsedMinutes / 60 * 16 + secondElapsedMinutes/ 60 * 8);
+
+			pay = (int) (firstElapsedMinutes / 60 * 12 + thirdElapsedMinutes / 60 * 16 + secondElapsedMinutes / 60 * 8);
 		}
-		
-		
-		
-		
-		
-		
+
 		return pay;
 	}
 
