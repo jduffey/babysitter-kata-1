@@ -174,32 +174,33 @@ public class BabysitterTest {
 		assertEquals( 8 * 2 + 16 * 2, pay);
 	}
 	
-	@Test
-	public void shouldFailForEndBeforeStart() throws InvalidTimesException {
+	@Test (expected = InvalidTimesException.class) 
+	public void shouldThrowExceptionForEndBeforeStart() throws InvalidTimesException {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 22, 0 );
 		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 2, 0);
 		int pay = sophie.compute("B", start, end);
 		assertEquals(0, pay);
 	}
 	
-	@Test
-	public void shouldFailForStartBeforeEarliestStart() throws InvalidTimesException {
+	@Test (expected = InvalidTimesException.class) 
+	public void shouldThrowExceptionForStartBeforeEarliestStart() throws InvalidTimesException {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 15, 0 );
 		LocalDateTime end = LocalDateTime.of(2018, 12, 13, 23, 0);
 		int pay = sophie.compute("B", start, end);
 		assertEquals(0, pay);
 	}
 	
-	@Test
-	public void shouldFailForEndAfterLatestEnd() throws InvalidTimesException {
+	@Test (expected = InvalidTimesException.class) 
+	public void shouldThrowExceptionForEndAfterLatestEnd() throws InvalidTimesException {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 15, 0 );
 		LocalDateTime end = LocalDateTime.of(2018, 12, 14, 4, 30);
 		int pay = sophie.compute("B", start, end);
 		assertEquals(0, pay);
+		
 	}
 
-	@Test
-	public void shouldFailForEndMoreThan11HoursFromStart() throws InvalidTimesException {
+	@Test (expected = InvalidTimesException.class)
+	public void shouldThrowExceptionForEndMoreThan11HoursFromStart() throws InvalidTimesException {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 17, 0 );
 		LocalDateTime end = LocalDateTime.of(2018, 12, 14, 20, 30);
 		int pay = sophie.compute("B", start, end);
