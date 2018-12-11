@@ -21,10 +21,18 @@ public class Babysitter {
 			throw new InvalidTimesException();
 		}
 
-		if (family.equalsIgnoreCase("A")) {
-			LocalTime rateChange = LocalTime.parse("23:00");
+		if (family.equalsIgnoreCase("A") || family.equalsIgnoreCase("C")) {
+			// Family A pays $15 per hour before 11pm, and $20 per hour the rest of the night
+			// Family C pays $21 per hour before 9pm, then $15 the rest of the night
 			long firstElapsedMinutes = 0;
 			long secondElapsedMinutes = 0;
+			LocalTime rateChange = null;
+
+			if (family.equalsIgnoreCase("A")) {
+				rateChange = LocalTime.parse("23:00");
+			} else if (family.equalsIgnoreCase("C")) {
+				rateChange = LocalTime.parse("21:00");
+			}
 
 			if ((endTime.isBefore(rateChange) || endTime.equals(rateChange)) && endTime.isAfter(earliestStart)) {
 				firstElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
@@ -32,34 +40,19 @@ public class Babysitter {
 				secondElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
 			} else if (startTime.isBefore(rateChange) && (endTime.isAfter(rateChange) || endTime.isBefore(latestEnd))) {
 				firstElapsedMinutes = Duration.between(startTime, rateChange).toMinutes() + 1;
-				if (endTime.isBefore(latestEnd)) { // ends after midnight
+				if (endTime.isBefore(latestEnd)) {
 					secondElapsedMinutes = Duration.between(rateChange, LocalTime.MAX).toMinutes() + 1;
 					secondElapsedMinutes += Duration.between(LocalTime.MIDNIGHT, endTime).toMinutes() + 1;
 				} else if (endTime.isBefore(LocalTime.MAX)) {
 					secondElapsedMinutes = Duration.between(rateChange, endTime).toMinutes() + 1;
 				}
 			}
-			pay = (int) ((firstElapsedMinutes / 60 * 15) + (secondElapsedMinutes / 60 * 20));
+			if (family.equalsIgnoreCase("A")) {
+				pay = (int) ((firstElapsedMinutes / 60 * 15) + (secondElapsedMinutes / 60 * 20));
+			} else if (family.equalsIgnoreCase("C")) {
+				pay = (int) ((firstElapsedMinutes / 60 * 21) + (secondElapsedMinutes / 60 * 15));
 
-		} else if (family.equalsIgnoreCase("C")) {
-			LocalTime rateChange = LocalTime.parse("21:00");
-			long firstElapsedMinutes = 0;
-			long secondElapsedMinutes = 0;
-
-			if ((endTime.isBefore(rateChange) || endTime.equals(rateChange)) && endTime.isAfter(earliestStart)) {
-				firstElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
-			} else if (startTime.isAfter(rateChange) || startTime.equals(rateChange) || startTime.isBefore(latestEnd)) {
-				secondElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
-			} else if (startTime.isBefore(rateChange) && (endTime.isAfter(rateChange) || endTime.isBefore(latestEnd))) {
-				firstElapsedMinutes = Duration.between(startTime, rateChange).toMinutes() + 1;
-				if (endTime.isBefore(latestEnd)) { // ends after midnight
-					secondElapsedMinutes = Duration.between(rateChange, LocalTime.MAX).toMinutes() + 1;
-					secondElapsedMinutes += Duration.between(LocalTime.MIDNIGHT, endTime).toMinutes() + 1;
-				} else if (endTime.isBefore(LocalTime.MAX)) {
-					secondElapsedMinutes = Duration.between(rateChange, endTime).toMinutes() + 1;
-				}
 			}
-			pay = (int) ((firstElapsedMinutes / 60 * 21) + (secondElapsedMinutes / 60 * 15));
 
 		} else if (family.equalsIgnoreCase("B")) {
 			// Family B pays $12 per hour before 10pm, $8 between 10 and 12, and $16 the
