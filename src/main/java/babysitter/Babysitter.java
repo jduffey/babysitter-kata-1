@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 public class Babysitter {
 
-	public int compute(String family, LocalDateTime start, LocalDateTime end) {
+	public int compute(String family, LocalDateTime start, LocalDateTime end) throws InvalidTimesException {
 		LocalTime endTime = end.toLocalTime();
 		LocalTime startTime = start.toLocalTime(); // maybe start times always get rounded down and end times always get
 													// rounded up?
@@ -14,6 +14,10 @@ public class Babysitter {
 		LocalTime latestEnd = LocalTime.parse("04:01");
 
 		int pay = 0;
+		
+		if(end.isBefore(start) || (endTime.isAfter(latestEnd) && endTime.isBefore(earliestStart)) || (startTime.isBefore(earliestStart) && startTime.isAfter(latestEnd))) {
+			throw new InvalidTimesException();
+		}
 
 		if (family.equalsIgnoreCase("A")) {
 			LocalTime rateChange = LocalTime.parse("23:00");
