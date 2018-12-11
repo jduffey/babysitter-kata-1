@@ -10,7 +10,7 @@ Babysitter.compute(String family, LocalDateTime start, LocalDateTime end)
 family is either a, b, or c (case insensitive)
 times are only calculated to the minute (no need for milliseconds)
 
-###The babysitter:
+## The babysitter:
 
 starts no earlier than 5:00PM
 leaves no later than 4:00AM
@@ -19,7 +19,7 @@ gets paid for full hours (no fractional hours)
 should be prevented from mistakes when entering times (e.g. end time before start time, or outside of allowable work hours)
 
 
-###The job:
+## The job:
 
 Pays different rates for each family (based on bedtimes, kids and pets, etc...)
 Family A pays $15 per hour before 11pm, and $20 per hour the rest of the night
