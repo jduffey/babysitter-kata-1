@@ -4,6 +4,11 @@ Simulates a babysitter getting paid for a night's work. It calculates the babysi
 
 I built it using Gradle and Java's LocalTime and LocalDateTime apis.
 
+Babysitter has one method
+Babysitter.compute(String family, LocalDateTime start, LocalDateTime end)
+
+family is either a, b, or c (case insensitive)
+times are only calculated to the minute (no need for milliseconds)
 
 ###The babysitter:
 
