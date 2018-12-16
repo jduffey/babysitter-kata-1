@@ -10,36 +10,10 @@ import org.junit.Test;
 
 public class BabysitterTest {
 	
-	
+
 	Babysitter sophie = new Babysitter();
-	
-//	@Test
-//	public void shouldReturnTotalHoursWorkedGivenStartAndEndTimes() {
-//		
-//		LocalDateTime start = LocalDateTime.of(2018, 12, 12, 17, 0);
-//		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 20, 0);
-//		long elapsedTime = sophie.compute(start, end);
-//		assertEquals(3, elapsedTime);
-//		
-//	}
-//	
-//	@Test
-//	public void shouldCalculateTotalHoursWorkedGivenStartAndEndTimes() {
-//		LocalDateTime start = LocalDateTime.of(2018, 12, 12, 17, 0);
-//		LocalDateTime end = LocalDateTime.of(2018, 12, 12, 21, 0);
-//		long elapsedTime = sophie.compute(start, end);
-//		assertEquals(4, elapsedTime);
-//	
-//	}
-//	
-//	@Test
-//	public void shouldCalculateTotalHoursWorkedGivenStartTimeAndEndTimePastMidnight() {
-//		LocalDateTime start = LocalDateTime.of(2018, 12, 12, 17, 0);
-//		LocalDateTime end = LocalDateTime.of(2018, 12, 13, 1, 0);
-//		long elapsedTime = sophie.compute(start, end);
-//		assertEquals(8, elapsedTime);
-//	}
-	
+
+
 	@Test
 	public void shouldCalculateWagesForFamilyAGivenStartAndEndTimeBefore23() throws InvalidTimesException {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 12, 17, 0);
@@ -190,7 +164,7 @@ public class BabysitterTest {
 		assertEquals(0, pay);
 	}
 	
-	@Test (expected = InvalidTimesException.class) 
+	@Test (expected = InvalidTimesException.class)
 	public void shouldThrowExceptionForEndAfterLatestEnd() throws InvalidTimesException {
 		LocalDateTime start = LocalDateTime.of(2018, 12, 13, 15, 0 );
 		LocalDateTime end = LocalDateTime.of(2018, 12, 14, 4, 30);
