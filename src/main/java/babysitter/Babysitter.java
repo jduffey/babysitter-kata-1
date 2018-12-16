@@ -14,13 +14,13 @@ public class Babysitter {
 		LocalTime startTime = startShiftTime.toLocalTime();
 		LocalTime endTime = endShiftTime.toLocalTime();
 
-		LocalTime earliestStart = LocalTime.parse(EARLIEST_ALLOWED_START_TIME);
-		LocalTime latestEnd = LocalTime.parse(LATEST_ALLOWED_END_TIME);
+		LocalTime earliestAllowedStart = LocalTime.parse(EARLIEST_ALLOWED_START_TIME);
+		LocalTime latestAllowedEnd = LocalTime.parse(LATEST_ALLOWED_END_TIME);
 
 		int pay = 0;
 
-		if (endShiftTime.isBefore(startShiftTime) || (endTime.isAfter(latestEnd) && endTime.isBefore(earliestStart))
-				|| (startTime.isBefore(earliestStart) && startTime.isAfter(latestEnd))
+		if (endShiftTime.isBefore(startShiftTime) || (endTime.isAfter(latestAllowedEnd) && endTime.isBefore(earliestAllowedStart))
+				|| (startTime.isBefore(earliestAllowedStart) && startTime.isAfter(latestAllowedEnd))
 				|| (Duration.between(startShiftTime, endShiftTime).toHours() > 11)) {
 			throw new InvalidTimesException();
 		}
@@ -38,13 +38,13 @@ public class Babysitter {
 				rateChange = LocalTime.parse("21:00");
 			}
 
-			if ((endTime.isBefore(rateChange) || endTime.equals(rateChange)) && endTime.isAfter(earliestStart)) {
+			if ((endTime.isBefore(rateChange) || endTime.equals(rateChange)) && endTime.isAfter(earliestAllowedStart)) {
 				firstElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
-			} else if (startTime.isAfter(rateChange) || startTime.equals(rateChange) || startTime.isBefore(latestEnd)) {
+			} else if (startTime.isAfter(rateChange) || startTime.equals(rateChange) || startTime.isBefore(latestAllowedEnd)) {
 				secondElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
-			} else if (startTime.isBefore(rateChange) && (endTime.isAfter(rateChange) || endTime.isBefore(latestEnd))) {
+			} else if (startTime.isBefore(rateChange) && (endTime.isAfter(rateChange) || endTime.isBefore(latestAllowedEnd))) {
 				firstElapsedMinutes = Duration.between(startTime, rateChange).toMinutes() + 1;
-				if (endTime.isBefore(latestEnd)) {
+				if (endTime.isBefore(latestAllowedEnd)) {
 					secondElapsedMinutes = Duration.between(rateChange, LocalTime.MAX).toMinutes() + 1;
 					secondElapsedMinutes += Duration.between(LocalTime.MIDNIGHT, endTime).toMinutes() + 1;
 				} else if (endTime.isBefore(LocalTime.MAX)) {
@@ -67,10 +67,10 @@ public class Babysitter {
 			long thirdElapsedMinutes = 0;
 			long secondElapsedMinutes = 0;
 
-			if ((endTime.isBefore(rateChange1) || endTime.equals(rateChange1)) && endTime.isAfter(earliestStart)) {
+			if ((endTime.isBefore(rateChange1) || endTime.equals(rateChange1)) && endTime.isAfter(earliestAllowedStart)) {
 				firstElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 
-			} else if (startTime.isBefore(latestEnd)) {
+			} else if (startTime.isBefore(latestAllowedEnd)) {
 				thirdElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 
 			} else if (startTime.isAfter(rateChange1) || startTime.equals(rateChange1)) {
@@ -78,7 +78,7 @@ public class Babysitter {
 					secondElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 				} else if (endTime.equals(rateChange2)) {
 					secondElapsedMinutes = Duration.between(startTime, LocalTime.MAX).toMinutes() + 1;
-				} else if (endTime.isBefore(latestEnd)) {
+				} else if (endTime.isBefore(latestAllowedEnd)) {
 					secondElapsedMinutes = Duration.between(startTime, LocalTime.MAX).toMinutes() + 1;
 					thirdElapsedMinutes = Duration.between(LocalTime.MIDNIGHT, endTime).toMinutes() + 1;
 				}
@@ -91,7 +91,7 @@ public class Babysitter {
 				} else if (endTime.equals(rateChange2)) {
 					firstElapsedMinutes = Duration.between(startTime, rateChange1).toMinutes() + 1;
 					secondElapsedMinutes = Duration.between(rateChange1, LocalTime.MAX).toMinutes() + 1;
-				} else if (endTime.isBefore(latestEnd) || endTime.equals(latestEnd)) {
+				} else if (endTime.isBefore(latestAllowedEnd) || endTime.equals(latestAllowedEnd)) {
 					firstElapsedMinutes = Duration.between(startTime, rateChange1).toMinutes() + 1;
 					secondElapsedMinutes = Duration.between(rateChange1, LocalTime.MAX).toMinutes() + 1;
 					thirdElapsedMinutes += Duration.between(LocalTime.MIDNIGHT, endTime).toMinutes() + 1;
