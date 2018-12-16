@@ -6,18 +6,22 @@ import java.time.LocalTime;
 
 public class Babysitter {
 
-	public int compute(String family, LocalDateTime start, LocalDateTime end) throws InvalidTimesException {
-		LocalTime endTime = end.toLocalTime();
-		LocalTime startTime = start.toLocalTime(); // maybe start times always get rounded down and end times always get
-													// rounded up?
-		LocalTime earliestStart = LocalTime.parse("17:00");
-		LocalTime latestEnd = LocalTime.parse("04:01");
+	private static final String EARLIEST_ALLOWED_START_TIME = "17:00";
+	private static final String LATEST_ALLOWED_END_TIME = "04:01";
+
+	public int compute(String family, LocalDateTime startShiftTime, LocalDateTime endShiftTime) throws InvalidTimesException {
+
+		LocalTime startTime = startShiftTime.toLocalTime();
+		LocalTime endTime = endShiftTime.toLocalTime();
+
+		LocalTime earliestStart = LocalTime.parse(EARLIEST_ALLOWED_START_TIME);
+		LocalTime latestEnd = LocalTime.parse(LATEST_ALLOWED_END_TIME);
 
 		int pay = 0;
 
-		if (end.isBefore(start) || (endTime.isAfter(latestEnd) && endTime.isBefore(earliestStart))
+		if (endShiftTime.isBefore(startShiftTime) || (endTime.isAfter(latestEnd) && endTime.isBefore(earliestStart))
 				|| (startTime.isBefore(earliestStart) && startTime.isAfter(latestEnd))
-				|| (Duration.between(start, end).toHours() > 11)) {
+				|| (Duration.between(startShiftTime, endShiftTime).toHours() > 11)) {
 			throw new InvalidTimesException();
 		}
 
@@ -35,9 +39,9 @@ public class Babysitter {
 			}
 
 			if ((endTime.isBefore(rateChange) || endTime.equals(rateChange)) && endTime.isAfter(earliestStart)) {
-				firstElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
+				firstElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 			} else if (startTime.isAfter(rateChange) || startTime.equals(rateChange) || startTime.isBefore(latestEnd)) {
-				secondElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
+				secondElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 			} else if (startTime.isBefore(rateChange) && (endTime.isAfter(rateChange) || endTime.isBefore(latestEnd))) {
 				firstElapsedMinutes = Duration.between(startTime, rateChange).toMinutes() + 1;
 				if (endTime.isBefore(latestEnd)) {
@@ -64,14 +68,14 @@ public class Babysitter {
 			long secondElapsedMinutes = 0;
 
 			if ((endTime.isBefore(rateChange1) || endTime.equals(rateChange1)) && endTime.isAfter(earliestStart)) {
-				firstElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
+				firstElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 
 			} else if (startTime.isBefore(latestEnd)) {
-				thirdElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
+				thirdElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 
 			} else if (startTime.isAfter(rateChange1) || startTime.equals(rateChange1)) {
 				if (endTime.isBefore(LocalTime.MAX) && endTime.isAfter(rateChange1)) {
-					secondElapsedMinutes = Duration.between(start, end).toMinutes() + 1;
+					secondElapsedMinutes = Duration.between(startShiftTime, endShiftTime).toMinutes() + 1;
 				} else if (endTime.equals(rateChange2)) {
 					secondElapsedMinutes = Duration.between(startTime, LocalTime.MAX).toMinutes() + 1;
 				} else if (endTime.isBefore(latestEnd)) {
