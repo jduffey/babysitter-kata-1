@@ -11,7 +11,7 @@ public class Babysitter {
 	private static final LocalTime FAMILY_B_RATE_CHANGE_TIME_ONE = LocalTime.parse("22:00");
 	private static final LocalTime FAMILY_B_RATE_CHANGE_TIME_TWO = LocalTime.MIDNIGHT;
 
-	public int compute(String family, LocalDateTime startShiftTime, LocalDateTime endShiftTime) throws InvalidTimesException {
+	public int compute(String family, LocalDateTime startShiftTime, LocalDateTime endShiftTime) throws InvalidTimesException, InvalidFamilyException {
 
 		LocalTime startTime = startShiftTime.toLocalTime();
 		LocalTime endTime = endShiftTime.toLocalTime();
@@ -21,7 +21,7 @@ public class Babysitter {
 
 		int pay = 0;
 
-		validateShiftTimes(startShiftTime, endShiftTime, startTime, endTime, earliestAllowedStart, latestAllowedEnd);
+		validateShiftTimes(family, startShiftTime, endShiftTime, startTime, endTime, earliestAllowedStart, latestAllowedEnd);
 
 		if (family.equalsIgnoreCase("A") || family.equalsIgnoreCase("C")) {
 			// Family A pays $15 per hour before 11pm, and $20 per hour the rest of the night
@@ -106,11 +106,15 @@ public class Babysitter {
 		return pay;
 	}
 
-	private void validateShiftTimes(LocalDateTime startShiftTime, LocalDateTime endShiftTime, LocalTime startTime, LocalTime endTime, LocalTime earliestAllowedStart, LocalTime latestAllowedEnd) throws InvalidTimesException {
+	private void validateShiftTimes(String family, LocalDateTime startShiftTime, LocalDateTime endShiftTime, LocalTime startTime, LocalTime endTime, LocalTime earliestAllowedStart, LocalTime latestAllowedEnd) throws InvalidTimesException, InvalidFamilyException {
 		if (endShiftTime.isBefore(startShiftTime) || (endTime.isAfter(latestAllowedEnd) && endTime.isBefore(earliestAllowedStart))
 				|| (startTime.isBefore(earliestAllowedStart) && startTime.isAfter(latestAllowedEnd))
 				|| (Duration.between(startShiftTime, endShiftTime).toHours() > 11)) {
 			throw new InvalidTimesException();
+		}
+
+		if (!family.equalsIgnoreCase("A") && !family.equalsIgnoreCase("B") && !family.equalsIgnoreCase("C")){
+			throw new InvalidFamilyException();
 		}
 	}
 
