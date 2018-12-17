@@ -21,7 +21,7 @@ public class Babysitter {
 
 		int pay = 0;
 
-		validateShiftTimes(family, startShiftTime, endShiftTime, startTime, endTime, earliestAllowedStart, latestAllowedEnd);
+		validateInputs(family, startShiftTime, endShiftTime, startTime, endTime, earliestAllowedStart, latestAllowedEnd);
 
 		if (family.equalsIgnoreCase("A") || family.equalsIgnoreCase("C")) {
 			// Family A pays $15 per hour before 11pm, and $20 per hour the rest of the night
@@ -106,7 +106,7 @@ public class Babysitter {
 		return pay;
 	}
 
-	private void validateShiftTimes(String family, LocalDateTime startShiftTime, LocalDateTime endShiftTime, LocalTime startTime, LocalTime endTime, LocalTime earliestAllowedStart, LocalTime latestAllowedEnd) throws InvalidTimesException, InvalidFamilyException {
+	private void validateInputs(String family, LocalDateTime startShiftTime, LocalDateTime endShiftTime, LocalTime startTime, LocalTime endTime, LocalTime earliestAllowedStart, LocalTime latestAllowedEnd) throws InvalidTimesException, InvalidFamilyException {
 		if (endShiftTime.isBefore(startShiftTime) || (endTime.isAfter(latestAllowedEnd) && endTime.isBefore(earliestAllowedStart))
 				|| (startTime.isBefore(earliestAllowedStart) && startTime.isAfter(latestAllowedEnd))
 				|| (Duration.between(startShiftTime, endShiftTime).toHours() > 11)) {
